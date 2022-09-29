@@ -1,0 +1,15 @@
+
+.food img{
+    max-width: 10%;
+    max-height: 10%;
+    height: 100%;
+    width: 100%;
+    
+}
+
+.food-collection{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  
+  }
+  
