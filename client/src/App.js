@@ -27,13 +27,8 @@ function App() {
       <Route exact path='/diets'>
         <Diet name={'Start Diet'}/> 
       </Route>
-      <Route exact path='/recipes'>
-        <Search name={'Start Search'}/> 
-      </Route>
       <Route path='/recipes/:id' component={FoodDetail}/>
       {/*<Route exact path='/recipes/create' component={CreateCharacter}/>*/}
-      {/*<Route exact path="/" component={Buscador} />*/}
-      {/*<Route path="/movie/:id" component={Movie} />*/}
     </React.Fragment>
   );
 }

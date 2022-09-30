@@ -1,1 +1,36 @@
 23f9b242f5524a6ca59188b1138f18b0
+
+Melisa Ferreyra
+
+ver plato con instrucciones para cocinarlo
+
+https://api.spoonacular.com/recipes/201369/information?apiKey=23f9b242f5524a6ca59188b1138f18b0&addRecipeInformation=true
+
+
+Pues en la landing page se coloca el botón de inicio que hace el dispatch 
+y trae todas las recetas y luego un input en cuál introducir el nombre 
+de una receta y traerla con toda la información
+
+------- Ejemplos
+https://recipe-react-webpage-pi.vercel.app/home
+
+A1
+https://food-armucode.vercel.app/home 
+
+
+Form de busqueda
+                    <li className="list-item">
+                        <form className="form-container" onSubmit={(e) => this.handleSubmit(e)}>
+                            <div>
+                                <label className="label" htmlFor="title">Película: </label>
+                                <input
+                                type="text"
+                                id="title"
+                                autoComplete="off"
+                                value={this.props.foods.title}
+                                onChange={(e) => this.handleChange(e)}
+                                />
+                            </div>
+                            <button type="submit">Search</button>
+                        </form>
+                    </li>

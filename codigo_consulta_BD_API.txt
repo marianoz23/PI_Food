@@ -1,0 +1,56 @@
+router.get("/", async (req, res, next) => {
+  try {
+    const { name } = req.query;
+    const recipePromiseApi = fetch(
+      `${apiRecipe}&addRecipeInformation=true&number=100`
+    ).then((data) => data.json());
+    const recipePromiseDb = Recipe.findAll({
+      include: TypeOfDiet,
+    });
+    Promise.all([recipePromiseApi, recipePromiseDb]).then((respuesta) => {
+      const [recipeApi, recipeDb] = respuesta;
+      const filteredRecipesApi = recipeApi.results.map((recipe) => {
+        peticion(recipe);
+        const pasos = recipe.analyzedInstructions[0]
+          ? recipe.analyzedInstructions[0].steps.map((item) => {
+              return item?.step;
+            })
+          : ["No tiene receta"];
+        return {
+          id: recipe.id,
+          name: recipe.title,
+          summary: recipe.summary,
+          healthScore: recipe.healthScore,
+          instructions: pasos.join(" "),
+        };
+      });
+      const allRecipes = [...filteredRecipesApi, ...recipeDb];
+      if (name) {
+        const busqueda = allRecipes.filter((recipe) =>
+          recipe.name.toLowerCase().includes(name.toLowerCase())
+        );
+        return res.send(busqueda);
+      }
+      res.send(allRecipes);
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
+
+
+const peticion = (item) => {
+  if (item.analyzedInstructions[0]) {
+    const pasos = item.analyzedInstructions[0]?.steps?.map((item) => {
+      return item?.step ?? "No tiene receta";
+    });
+    Recipe.create({
+      id: item.id,
+      name: item.title,
+      summary: item.summary,
+      healthScore: item.healthScore,
+      instructions: pasos.join(" "),
+    });
+  }
+};

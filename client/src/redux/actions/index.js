@@ -6,8 +6,9 @@ export const GET_DIETS = "GET_DIETS";
 
 export function getFoods(){
     return function (dispatch){
-        
-        return fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=23f9b242f5524a6ca59188b1138f18b0&number=100`) 
+        //&number=100
+//        return fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=23f9b242f5524a6ca59188b1138f18b0`) 
+        return fetch(`http://localhost:3001/`)
         .then(res => res.json())
         .then(res => {  
             dispatch({
@@ -18,10 +19,10 @@ export function getFoods(){
     }
 }
 
-export function getSearch(){
+export function getSearch(title){
     return function (dispatch){
         
-        return fetch(`http://localhost:3001/recipes?name=Garlic`) 
+        return fetch(`http://localhost:3001/recipes?name=${title}`) 
         .then(res => res.json())
         .then(res => {  
             dispatch({

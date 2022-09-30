@@ -12,45 +12,20 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 //router.use(express.json());
 
-router.get('/', (req, res) => {
-    res.send('Hola Foodman');
-  });
-
-/*
-router.get('/recipes', async (req, res)=> {
-    const {name} = req.query
+//http://localhost:3001/
+router.get('/', async (req, res)=> {
     try{
-        if (!name) return res.status(404).send(`Debe ingresar un datoa para realizar la busqueda`)
-        const recipe = await Recipe.findAll({
-            where: {
-                name: {[Op.substring]: name},
-            }
-            })
-            console.log(recipe)
-            //res.send(recipe)
-            res.status(201).json(recipe)
+       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}`) 
+       //console.log(recipe)
+       //res.send(recipe)
+       res.status(201).json(recipe.data)
+
         }
     catch (e) {
         console.log(e)
     }
 })
-*/
 
-/*
-router.post('/recipes/', async (req, res)=> {
-    const {name, summary, healthScore, instructions} = req.body
-    console.log(name, summary)
-    if (!name || !summary ) return res.status(404).send("Falta enviar datos obligatorios")
-
-    try{
-        const recipe = await Recipe.create(req.body)
-        res.status(201).json(recipe)
-    }
-    catch (error){
-        res.status(404).send("Error en alguno de los datos provistos")
-    }
-})
-*/
 
 //http://localhost:3001/recipes?name=Garlic
 router.get('/recipes', async (req, res)=> {
@@ -72,7 +47,6 @@ router.get('/recipes', async (req, res)=> {
 //http://localhost:3001/recipes/715594
 router.get('/recipes/:id', async (req, res)=> {
     const {id} = req.params
-    console.log("hola", id)
      try{
        const recipe = await axios(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_PASS}`) 
        //console.log(recipe.data.id)
@@ -86,7 +60,7 @@ router.get('/recipes/:id', async (req, res)=> {
 
 //
 
-
+//http://localhost:3001/diets
 router.get('/diets', async (req, res)=> {
 //    const {name} = req.query
     try{
@@ -101,8 +75,50 @@ router.get('/diets', async (req, res)=> {
 })
 
 
+/*
+router.get('/recipes', async (req, res)=> {
+    const {name} = req.query
+    try{
+        if (!name) return res.status(404).send(`Debe ingresar un datoa para realizar la busqueda`)
+        const recipe = await Recipe.findAll({
+            where: {
+                name: {[Op.substring]: name},
+            }
+            })
+            console.log(recipe)
+            //res.send(recipe)
+            res.status(201).json(recipe)
+        }
+    catch (e) {
+        console.log(e)
+    }
+})
+*/
+
+/*    
+router.post('/recipes', async (req, res)=> {
+    console.log(req.body)
+    //const {name, summary, healthScore, instructions} = req.body
+    console.log(name, summary)
+    if (!name || !summary ) return res.status(404).send("Falta enviar datos obligatorios")
+
+    try{
+        const recipe = await Recipe.create(req.body)
+        res.status(201).json(recipe)
+    }
+    catch (error){
+        res.status(404).send("Error en alguno de los datos provistos")
+    }
+
+})
+*/
+
+
 
 module.exports = router;
+
+
+
 
 
 /*
