@@ -1,9 +1,9 @@
 .home{
-    background-color: rgb(67, 67, 67);
+    background-color: gray;
     color: white;
 }
 .home a{
-    color: black;
+    color: gray ;
 }
 .home h1,h4 {
     color: yellow;

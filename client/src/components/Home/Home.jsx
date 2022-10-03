@@ -1,7 +1,9 @@
 import "./home.css";
+import Logo from './../../img/cooking.png'
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getFoods, getSearch } from "./../../redux/actions/index";
+import { getFoods, getSearch, orderByTitle } from "./../../redux/actions/index";
 
 import FoodCard from "./../FoodCard/FoodCard.jsx"
 
@@ -15,8 +17,8 @@ export class Home extends Component {
   
   componentDidMount (){
     this.props.getFoods()
-  }
-
+    }
+ 
   handleChange(event){
     this.setState({ title: event.target.value }); // captura el input
   }
@@ -26,11 +28,25 @@ export class Home extends Component {
     this.props.getSearch(this.state.title)
   }
 
+  orderRecipesTitle(event){
+    console.log("asad",orderByTitle(event.target.value))
+  //  this.props.orderByTitle(event.target.value)
+    //setOrder(event.target.value)
+    event.preventDefault()
+  };
+
   render() {
     const { title } = this.state;
 
+    console.log("regresando:", this.props.foods)
+
     return (
     <header>
+      <div>
+        <img id="logoFood" src={Logo} width="100" height="100" className="d-inline-block align-top" alt="Food Mania" />
+        <h1>Food Mania</h1>
+      </div>
+ 
 
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <div>
@@ -46,14 +62,34 @@ export class Home extends Component {
       </form>
 
       <div>
+        <h3>Order by Title</h3>
+        <select onChange={e => this.orderRecipesTitle(e)}>
+          <option value="">Selecionar Orden</option>
+          <option value="Asc">A to Z</option>
+          <option value="Desc">Z to A</option>
+        </select>
+      </div>
+      
+      <div>
+        <h3>Order by Health Score</h3>
+          <select name="select">
+            <option name="Select One" disabled>Sort Score</option>
+            <option value="ASCENDENT" selected>Ascendent</option>
+            <option value="DESCENDET" selected>Descendent</option>
+          </select>
+      </div>
+
+
+      <div>
         <div className="home">
             <h1>Recipes</h1>
-            {!this.props.foods? "No hay Foods" : this.props.foods.map(el => (
+            {!this.props.foods? "No hay recipes" : this.props.foods.map(el => (
               <div> 
                 <FoodCard
                   id={el.id}
                   title={el.title}
                   image={el.image}
+                  diets={el.diets}
                   />
               </div>
             ))
@@ -67,7 +103,8 @@ export class Home extends Component {
 
 export const mapStateToProps = (state) => {
   return {
-    foods: state.foods.results
+    //foods: state.foods.results
+    foods: state.foods
   }
 }
 
@@ -75,7 +112,6 @@ export const mapDispatchToProps = (dispatch) => {
   return {
     getFoods: () => dispatch(getFoods()),
     getSearch: title => dispatch(getSearch(title))  
-//    getSearch: () => dispatch(actions.getSearch())
    }
 }
 

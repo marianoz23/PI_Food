@@ -12,19 +12,56 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 //router.use(express.json());
 
+//http://localhost:3001/recipes/create/
+router.post('/recipes/create', async (req, res)=> {
+    console.log(req.body)
+    const {title, summary} = req.body
+    if (!title || !summary ) return res.status(404).send("Falta enviar datos obligatorios")
+
+    try{
+        const recipe = await Recipe.create(req.body)
+        res.status(201).json(recipe)
+    }
+    catch (error){
+        res.status(404).send("Error en alguno de los datos provistos")
+    }
+
+})
+
+
 //http://localhost:3001/
 router.get('/', async (req, res)=> {
+    console.log("entrando");
     try{
-       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}`) 
+{/*
+       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=5`) 
        //console.log(recipe)
        //res.send(recipe)
        res.status(201).json(recipe.data)
+*/}
+
+        const recipePromDb = await Recipe.findAll()
+        res.status(201).json(recipePromDb)
+
+        const recipePromApi = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=5`)
+        res.status(201).json(recipePromApi.data.results)
+       
+        Promise.all([recipePromApi, recipePromDb]).then((res) => {
+            const [recipeApi, recipeDb] = res;
+        
+            const allRecipes = [...recipeApi, ...recipeDb];
+       
+            res.status(201).json(allRecipes)
+
+        });
 
         }
     catch (e) {
         console.log(e)
     }
-})
+});
+
+ 
 
 
 //http://localhost:3001/recipes?name=Garlic
@@ -33,8 +70,8 @@ router.get('/recipes', async (req, res)=> {
     try{
         if (!name) return res.status(404).send(`Debe ingresar un dato para realizar la busqueda`)
         
-       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&apiKey=${API_PASS}`) 
-       //console.log(recipe)
+       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&apiKey=${API_PASS}&addRecipeInformation=true`) 
+       console.log(recipe)
        //res.send(recipe)
        res.status(201).json(recipe.data)
 
@@ -94,27 +131,6 @@ router.get('/recipes', async (req, res)=> {
     }
 })
 */
-
-/*    
-router.post('/recipes', async (req, res)=> {
-    console.log(req.body)
-    //const {name, summary, healthScore, instructions} = req.body
-    console.log(name, summary)
-    if (!name || !summary ) return res.status(404).send("Falta enviar datos obligatorios")
-
-    try{
-        const recipe = await Recipe.create(req.body)
-        res.status(201).json(recipe)
-    }
-    catch (error){
-        res.status(404).send("Error en alguno de los datos provistos")
-    }
-
-})
-*/
-
-
-
 module.exports = router;
 
 

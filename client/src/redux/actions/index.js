@@ -1,8 +1,9 @@
 export const GET_FOODS = "GET_FOODS";
 export const GET_SEARCH = "GET_SEARCH";
 export const GET_FOOD_DETAIL = "GET_FOOD_DETAIL";
-export const CREATE_FOOD = "CREATE_FOOD";
+export const CREATE_RECIPE = "CREATE_RECIPE";
 export const GET_DIETS = "GET_DIETS";
+export const ORDER_BY_TITLE = "ORDER_BY_TITLE"
 
 export function getFoods(){
     return function (dispatch){
@@ -48,16 +49,49 @@ export function getDiets(){
 }
 
 export function getFoodDetail(id){
-    console.log("actions:",id)
+
     return function (dispatch){
 //        return fetch(`https://api.spoonacular.com/recipes/${id}/information?apikey=23f9b242f5524a6ca59188b1138f18b0&number=100`) 
         return fetch(`http://localhost:3001/recipes/${id}`)
         .then(res => res.json())
-        .then(res => {  
+        .then(res => { console.log(res) 
             dispatch({
                 type: "GET_FOOD_DETAIL",
                 payload: res
             })
         })
     }
+}
+
+
+export function addRecipe(input){
+
+    return function (dispatch){
+        return fetch('http://localhost:3001/recipes/create',{
+                method:'POST',
+                headers: {'Content-Type': 'application/json',},
+                body: JSON.stringify({
+                    title: input.title,
+                    summary: input.summary,
+                    healthScore: input.healthScore,
+                    instructions: input.instructions,
+                    diets: input.diets,
+                    dishTypes: input.dishTypes
+                })
+        })
+        .then(res => res.json())
+        .then(res => {  
+            dispatch({
+                type: "CREATE_RECIPE",
+                payload: res
+            })
+        })
+    }   
+}
+
+export function orderByTitle(order){
+    return {
+        type: ORDER_BY_TITLE,
+        payload: order
+    };
 }

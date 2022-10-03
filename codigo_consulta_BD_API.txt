@@ -1,12 +1,13 @@
 router.get("/", async (req, res, next) => {
   try {
     const { name } = req.query;
-    const recipePromiseApi = fetch(
-      `${apiRecipe}&addRecipeInformation=true&number=100`
-    ).then((data) => data.json());
+    const recipePromiseApi = fetch(`${apiRecipe}&addRecipeInformation=true&number=100`)
+	.then((data) => data.json());
+
     const recipePromiseDb = Recipe.findAll({
       include: TypeOfDiet,
     });
+    
     Promise.all([recipePromiseApi, recipePromiseDb]).then((respuesta) => {
       const [recipeApi, recipeDb] = respuesta;
       const filteredRecipesApi = recipeApi.results.map((recipe) => {
@@ -54,3 +55,6 @@ const peticion = (item) => {
     });
   }
 };
+
+Link para POST
+https://stackoverflow.com/questions/29775797/fetch-post-json-data
