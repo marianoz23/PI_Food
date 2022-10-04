@@ -4,25 +4,20 @@ import "../../components/LandPage/LandPage.css";
 
 export default function Landing() {
   return (
-    <div className="Landing_background">
+    <div className="landing_background">
       <div className="conteined">
         <div></div>
         <div>
-          <h1 className="title">WELCOME TO FOOD MANIA</h1>
+          <h1 className="title">FOOD MANIA</h1>
           <Link to={"/home"}>
             <button className="buttonlanding">Load Recipes</button>
           </Link>
         </div>
-        <div className="Presentatión">
+        <div className="presentation">
           <p>
-            {" "}
-            <br />
-            Aquí encontrarás la mejor
-            <br /> recetas, con los mejores
-            <br /> ingredientes, para tu comida
-            <br /> favorita.
-            <br /> Aventurarte en un mundo lleno de <br />
-            sabores
+            Get inspired by seeing what your trusted friends are recommending, trying, and making for their own families.
+            Connect your favorite Pinterest boards to Favoreats and pin away, they'll handle the rest—all your favorite recipes will be imported and organized automatically.
+            Add recipes to your meal plan and send the ingredients to your shopping list with a single click.
           </p>
         </div>
       </div>

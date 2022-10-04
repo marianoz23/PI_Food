@@ -1,5 +1,6 @@
 import "./home.css";
 import Logo from './../../img/cooking.png'
+import NavBar from "./../Nav/NavBar";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -42,6 +43,8 @@ export class Home extends Component {
 
     return (
     <header>
+      <NavBar/>
+      
       <div>
         <img id="logoFood" src={Logo} width="100" height="100" className="d-inline-block align-top" alt="Food Mania" />
         <h1>Food Mania</h1>
