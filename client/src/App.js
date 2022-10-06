@@ -15,7 +15,6 @@ function App() {
      
       <Route exact path="/" component={Landing} />
      
-      
       <Route exact path='/home' component={Home}/> 
       <Route path='/recipes/:id' component={FoodDetail}/>
       <Route exact path='/recipes/create' component={CreateRecipe}/>

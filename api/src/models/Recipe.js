@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: false
     }, 
-    healthScore: {
+    healthscore: {
       type: DataTypes.INTEGER,
     },
     instructions: {
@@ -26,7 +26,12 @@ module.exports = (sequelize) => {
     },
     dishTypes: {
       type:DataTypes.ARRAY(DataTypes.STRING),
-    }  
+    },
+    tipo: {
+      type : DataTypes.INTEGER,
+      defaultValue: 0
+    }
+
   },{
     timestamps: false
   });

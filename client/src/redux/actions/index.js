@@ -4,12 +4,14 @@ export const GET_FOOD_DETAIL = "GET_FOOD_DETAIL";
 export const CREATE_RECIPE = "CREATE_RECIPE";
 export const GET_DIETS = "GET_DIETS";
 export const ORDER_BY_TITLE = "ORDER_BY_TITLE"
+export const ORDER_BY_HEALTHSCORE = "ORDER_BY_HEALTHSCORE"
+
 
 export function getFoods(){
     return function (dispatch){
         //&number=100
 //        return fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=23f9b242f5524a6ca59188b1138f18b0`) 
-        return fetch(`http://localhost:3001/`)
+        return fetch(`http://localhost:3001/home`)
         .then(res => res.json())
         .then(res => {  
             dispatch({
@@ -33,6 +35,37 @@ export function getSearch(title){
         })
     }
 }
+
+export function orderByTitle(tipo){
+    console.log("ACTIONS:tipo order title:", tipo)
+    return function (dispatch){
+        
+        return fetch(`http://localhost:3001/home/orderBy/1${tipo}`) 
+        .then(res => res.json())
+        .then(res => {  
+            dispatch({
+                type: "ORDER_BY_TITLE",
+                payload: res
+            })
+        })
+    }
+}
+
+export function orderByHealthScore(tipo){
+    console.log("ACTIONS:tipo order HealthScore:", tipo)
+    return function (dispatch){
+        
+        return fetch(`http://localhost:3001/home/orderBy/2${tipo}`) 
+        .then(res => res.json())
+        .then(res => {  
+            dispatch({
+                type: "ORDER_BY_HEALTHSCORE",
+                payload: res
+            })
+        })
+    }
+}
+
 
 export function getDiets(){
     return function (dispatch){
@@ -73,7 +106,7 @@ export function addRecipe(input){
                 body: JSON.stringify({
                     title: input.title,
                     summary: input.summary,
-                    healthScore: input.healthScore,
+                    healthscore: input.healthScore,
                     instructions: input.instructions,
                     diets: input.diets,
                     dishTypes: input.dishTypes
@@ -89,9 +122,3 @@ export function addRecipe(input){
     }   
 }
 
-export function orderByTitle(order){
-    return {
-        type: ORDER_BY_TITLE,
-        payload: order
-    };
-}

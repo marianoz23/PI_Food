@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { Op, Recipe, Diet } = require('../db');
 const { API_PASS } = process.env;
 const axios = require('axios');
+const db = require('../db');
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -29,57 +30,106 @@ router.post('/recipes/create', async (req, res)=> {
 })
 
 
-//http://localhost:3001/
-router.get('/', async (req, res)=> {
-    console.log("entrando");
-    try{
-{/*
-       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=5`) 
-       //console.log(recipe)
-       //res.send(recipe)
-       res.status(201).json(recipe.data)
-*/}
+//http://localhost:3001/home
+router.get('/home', async (req, res)=> {
 
-        const recipePromDb = await Recipe.findAll()
-        res.status(201).json(recipePromDb)
-
-        const recipePromApi = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=5`)
-        res.status(201).json(recipePromApi.data.results)
+    const apiDB = [] 
+  
+    try
+    {
+        const recipePromDb = Recipe.findAll()
+        Promise.all( [recipePromDb] ).then((res2) => {     
+            const [recipeDb] = res2
+            let aDB = recipeDb;
+            var cApi = 0
+            var cDb = 0
+            for ( i in aDB )
+            { 
+                apiDB.push( { id:aDB[i].id, title:aDB[i].title, image:aDB[i].image, healthscore:aDB[i].healthscore, diets:aDB[i].diets })
+                if (aDB[i].tipo===1) cApi++
+                else cDb++;
+            };
+            console.log("Registros de DB:", cDb)
+            console.log("Registros de API:", cApi)
+            if ( cApi > 0 ) //(cApi === 0)   
+            { 
+                console.log("Extrae recetas de DB")
+                res.status(201).json(apiDB);
+            }
+            else
+            {
+                console.log("Extrae recetas de API")
+                const recipePromApi = axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=10`)
        
-        Promise.all([recipePromApi, recipePromDb]).then((res) => {
-            const [recipeApi, recipeDb] = res;
+                Promise.all( [recipePromApi] ).then((res3) => {     
+                    const [recipeApi] = res3
+                    let aApi = recipeApi.data.results
+                    for ( i in aApi )
+                    { 
+                        apiDB.push( { id : aApi[i].id, title : aApi[i].title, image : aApi[i].image, healthscore : aApi[i].healthScore, diets : aApi[i].diets })
+                    
+                        Recipe.create({
+                            id: aApi[i].id,
+                            image: aApi[i].image,
+                            title: aApi[i].title,
+                            summary: aApi[i].summary,
+                            healthscore: aApi[i].healthScore,
+                            diets: aApi[i].diets,
+                            tipo: 1
+                          });
+                      
+                    }
+                            
+                    res.status(200).json(apiDB);
         
-            const allRecipes = [...recipeApi, ...recipeDb];
-       
-            res.status(201).json(allRecipes)
+                });
 
-        });
+            }
 
-        }
-    catch (e) {
+        });    
+
+    }
+    catch (e) 
+    {
         console.log(e)
     }
 });
 
- 
+/*
 
+//http://localhost:3001/home
+router.get('/home', async (req, res)=> {
 
-//http://localhost:3001/recipes?name=Garlic
-router.get('/recipes', async (req, res)=> {
-    const {name} = req.query
-    try{
-        if (!name) return res.status(404).send(`Debe ingresar un dato para realizar la busqueda`)
-        
-       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&apiKey=${API_PASS}&addRecipeInformation=true`) 
-       console.log(recipe)
-       //res.send(recipe)
-       res.status(201).json(recipe.data)
+    const apiDB=[] 
+  
+    try
+    {
+        const recipePromDb = Recipe.findAll()
 
-        }
-    catch (e) {
+        const recipePromApi = axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=2`)
+       
+        Promise.all( [recipePromDb, recipePromApi] ).then((res2) => {     
+            const [recipeDb, recipeApi] = res2
+            let aDB = recipeDb;
+            for ( i in aDB ){ apiDB.push( { id:aDB[i].id, title:aDB[i].title, image:aDB[i].image, diets:aDB[i].diets })}
+
+            let aApi = recipeApi.data.results
+            for ( i in aApi ){ apiDB.push( { id:aApi[i].id, title:aApi[i].title, image:aApi[i].image, diets:aApi[i].diets })}
+
+            res.status(200).json(apiDB);
+
+        });
+    }
+    catch (e) 
+    {
         console.log(e)
     }
-})
+});
+
+
+*/
+ 
+
 
 //http://localhost:3001/recipes/715594
 router.get('/recipes/:id', async (req, res)=> {
@@ -111,26 +161,85 @@ router.get('/diets', async (req, res)=> {
     }
 })
 
+//http://localhost:3001/home/orderBy/1ASC
+router.get('/home/orderBy/:id', async (req, res)=> {
+    const {id} = req.params
+    var campo=''
+    if (id.substring(0,1)==='1') campo='title'
+    else campo='healthscore' 
+    console.log("orderBy", campo, id.substring(1) )
 
-/*
-router.get('/recipes', async (req, res)=> {
+    const apiDB = []
+    try
+    {   const recipePromDb = Recipe.findAll( { order: [ [campo, id.substring(1) ], ], } ) 
+        Promise.all( [recipePromDb] ).then((res2) => {     
+            const [recipeDb] = res2
+            let aDB = recipeDb;
+            for ( i in aDB ) apiDB.push( { id : aDB[i].id, title : aDB[i].title, image : aDB[i].image, healthscore : aDB[i].healthscore, diets : aDB[i].diets })
+            console.log("Registros de DB:", aDB.length)
+            if (aDB.length > 0)
+            { 
+                console.log("Extrae recetas ordenadas de DB")
+                res.status(201).json(apiDB);
+            }
+                        
+        });    
+
+    }
+    catch (e) 
+    {
+        console.log(e)
+    }
+});
+
+//http://localhost:3001/recipes?name=Garlic
+router.get('/xrecipes', async (req, res)=> {
+    console.log("Entrando a hacer la busqueda")
     const {name} = req.query
     try{
-        if (!name) return res.status(404).send(`Debe ingresar un datoa para realizar la busqueda`)
-        const recipe = await Recipe.findAll({
-            where: {
-                name: {[Op.substring]: name},
-            }
-            })
-            console.log(recipe)
-            //res.send(recipe)
-            res.status(201).json(recipe)
+        if (!name) return res.status(404).send(`Debe ingresar un dato para realizar la busqueda`)
+        
+       const recipe = await axios(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&apiKey=${API_PASS}&addRecipeInformation=true`) 
+       console.log(recipe)
+       //res.send(recipe)
+       res.status(201).json(recipe.data.results)
+
         }
     catch (e) {
         console.log(e)
     }
 })
-*/
+
+//-------------------------------------------------
+//http://localhost:3001/recipes?name=Garlic
+router.get('/recipes', async (req, res)=> {
+    console.log("Entrando a hacer la busqueda a la DB")
+    const {name} = req.query
+    const apiDB = []
+    try{
+        if (!name) return res.status(404).send(`Debe ingresar un dato para realizar la busqueda`)
+        const recipePromDb = await Recipe.findAll({
+            where: {
+                title: {[Op.substring]: name},
+            }
+            })
+            Promise.all( [recipePromDb] ).then((res2) => {     
+                const [recipeDb] = res2
+                let aDB = recipeDb;
+                for ( i in aDB )
+                { 
+                    apiDB.push( { id:aDB[i].id, title:aDB[i].title, image:aDB[i].image, healthscore:aDB[i].healthscore, diets:aDB[i].diets })
+                };
+                console.log("Extrae Busqueda de DB")
+                res.status(201).json(apiDB);
+            });    
+            
+        }
+    catch (e) {
+        console.log(e)
+    }
+})
+
 module.exports = router;
 
 

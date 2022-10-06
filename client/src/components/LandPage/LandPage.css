@@ -1,12 +1,13 @@
 .landing_background {
     display: flex;
-    justify-content:right;
+    justify-content:center;
+    align-items: center;
     background-image: url("../../img/cooking.png");
     background-position: right;
     background-size:90%;
     background-repeat: no-repeat;
     overflow: hidden;
-    width: 50%;
+    width: 58%;
     height: 100%;
     position: fixed
 }
@@ -15,11 +16,11 @@
     display: flex;
     align-items: center;
     align-content: center;
-    margin-right: 30px;
+    margin-right: 50px;
 }
 
 .buttonlanding {
-    background-image: linear-gradient(90deg, #ff0000 0%, #000000 49%, #ff0000 80%, #000000 100%);
+    background-image: linear-gradient(90deg, gray 0%, #000000 49%, gray 80%, #000000 100%);
     font-size: 20px;
     color: #fff;
     border: none;
@@ -27,25 +28,25 @@
     padding: 15px;
     min-height: 30px;
     min-width: 180px;
-    margin-right: 13rem;
-    margin-top: 3%;
+    margin-right: 16rem;
+    margin-top: 1%;
 }
 
 .presentation {
     color:black;
     text-align: center;
-    margin-top: 60%;
+    margin-top: 50%;
     font-size: 18px;
 }
 
 .buttonlanding:hover {
-    background-image: linear-gradient(90deg, #ff0000 0%, #000000 49%, #ff0000 80%, #000000 100%);
+    background-image: linear-gradient(90deg, gray 0%, #000000 49%, gray 80%, #000000 100%);
     animation: slidebg 2s linear infinite;
    
 }
 
 .title {
-    margin-right: 13rem;
+    margin-right: 18rem;
     margin-top: 80%;
     font-size: 4rem;
     padding: 20px;

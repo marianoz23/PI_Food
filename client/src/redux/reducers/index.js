@@ -1,4 +1,4 @@
-import {GET_FOODS, GET_SEARCH, GET_FOOD_DETAIL, CREATE_RECIPE, GET_DIETS, ORDER_BY_TITLE} from '../actions/index.js'
+import {GET_FOODS, GET_SEARCH, GET_FOOD_DETAIL, CREATE_RECIPE, GET_DIETS, ORDER_BY_TITLE, ORDER_BY_HEALTHSCORE} from '../actions/index.js'
 
 const initialState = {
   foods: [],
@@ -35,8 +35,28 @@ const rootReducer = (state = initialState, action) => {
         }
 
     case ORDER_BY_TITLE:
-          const orderRecipesTitle = action.payload === "Asc" ?
-              
+        return{
+            ...state,
+            foods: action.payload
+        }
+
+    case ORDER_BY_HEALTHSCORE:
+            return{
+                ...state,
+                foods: action.payload
+            }
+    
+    default:
+        return state
+  }
+};
+
+export default rootReducer;
+
+
+/*
+
+      const orderRecipesTitle = action.payload === "Asc" ?
               state.foods.sort((a,b)=>{
                   if(a.title.toLowerCase() > b.title.toLowerCase()){
                       return 1
@@ -58,9 +78,5 @@ const rootReducer = (state = initialState, action) => {
               ...state,
               allRecipes: orderRecipesTitle
           }     
-    default:
-        return state
-  }
-};
-
-export default rootReducer;
+    
+*/

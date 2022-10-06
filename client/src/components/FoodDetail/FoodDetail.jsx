@@ -19,9 +19,11 @@ const FoodDetail = (props) => {
       <img src={detail.image} alt={detail.name} />
       <h3>{detail.title}</h3>
       <h5>{detail.summary}</h5>
-      <h2>Health Score: {detail.healthScore}</h2>
+      <h2>Health Score: {detail.healthscore}</h2>
       <h4>Dish Type</h4>
 {/* 
+summary.replace(/<[^>]*>/g,'')
+res.set('Content-Type', 'text/html; charset=utf-8')
       <ol>
       {
         detail.dishTypes.map(dish => (

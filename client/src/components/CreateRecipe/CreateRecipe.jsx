@@ -42,7 +42,7 @@ function CreateRecipe({ add }) {
     cargaDiets();
     add(input);
     setInput(initialState);
-    history.push('/')
+    history.push('/home')
   };
 
   function cargaDiets(){
