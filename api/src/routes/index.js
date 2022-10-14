@@ -3,31 +3,7 @@ const { Op, Recipe, Diet } = require('../db');
 const { API_PASS } = process.env;
 const axios = require('axios');
 const db = require('../db');
-
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
-
 const router = Router();
-
-// Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
-//router.use(express.json());
-
-//http://localhost:3001/recipes/create/
-router.post('/recipes/create', async (req, res)=> {
-    console.log(req.body)
-    const {title, summary} = req.body
-    if (!title || !summary ) return res.status(404).send("Falta enviar datos obligatorios")
-
-    try{
-        const recipe = await Recipe.create(req.body)
-        res.status(201).json(recipe)
-    }
-    catch (error){
-        res.status(404).send("Error en alguno de los datos provistos")
-    }
-
-})
 
 
 //http://localhost:3001/home
@@ -51,15 +27,15 @@ router.get('/home', async (req, res)=> {
             };
             console.log("Registros de DB:", cDb)
             console.log("Registros de API:", cApi)
-            if ( cApi > 0 ) //(cApi === 0)   
-            { 
+            if ( cApi > 0 ) //(cApi === 0)
+            {   
                 console.log("Extrae recetas de DB")
                 res.status(201).json(apiDB);
             }
             else
             {
                 console.log("Extrae recetas de API")
-                const recipePromApi = axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=10`)
+                const recipePromApi = axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=100`)
        
                 Promise.all( [recipePromApi] ).then((res3) => {     
                     const [recipeApi] = res3
@@ -95,57 +71,78 @@ router.get('/home', async (req, res)=> {
     }
 });
 
-/*
+//http://localhost:3001/recipes/create/
+router.post('/recipes/create', async (req, res)=> {
+    console.log(req.body)
+    const {title, summary} = req.body
+    if (!title || !summary ) return res.status(404).send("Falta enviar datos obligatorios")
 
-//http://localhost:3001/home
-router.get('/home', async (req, res)=> {
-
-    const apiDB=[] 
-  
-    try
-    {
-        const recipePromDb = Recipe.findAll()
-
-        const recipePromApi = axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_PASS}&addRecipeInformation=true&number=2`)
-       
-        Promise.all( [recipePromDb, recipePromApi] ).then((res2) => {     
-            const [recipeDb, recipeApi] = res2
-            let aDB = recipeDb;
-            for ( i in aDB ){ apiDB.push( { id:aDB[i].id, title:aDB[i].title, image:aDB[i].image, diets:aDB[i].diets })}
-
-            let aApi = recipeApi.data.results
-            for ( i in aApi ){ apiDB.push( { id:aApi[i].id, title:aApi[i].title, image:aApi[i].image, diets:aApi[i].diets })}
-
-            res.status(200).json(apiDB);
-
-        });
+    try{
+        const recipeCreate = await Recipe.create(req.body);
+        const relacion = req.diets.map(diet => recipeCreate.addDiet(diet));
+        await Promise.all(relacion);
+        //res.status(201).json(recipe)
+        res.status(200).send({ msg: "Recipe successfully created" });
     }
-    catch (e) 
-    {
-        console.log(e)
+    catch (error){
+        res.status(404).send("Error en alguno de los datos provistos")
     }
-});
-
-
-*/
- 
+})
 
 
 //http://localhost:3001/recipes/715594
 router.get('/recipes/:id', async (req, res)=> {
     const {id} = req.params
      try{
-       const recipe = await axios(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_PASS}`) 
-       //console.log(recipe.data.id)
-       //res.send(recipe)
-       res.status(201).json(recipe.data)
+        if (id.length > 2) 
+        { 
+            const recipe = await axios(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_PASS}`) 
+            if (recipe) res.status(201).json(recipe.data)
+        }    
+       else
+       {
+        const recipeDb = await Recipe.findByPk(id)
+        if (!recipeDb) return res.status(404).send(`El código ${id} no corresponde a una receta existente`)
+        res.status(201).json(recipeDb);
+        }               
+    }
+    catch (e)
+    {
+        console.log(e)
+    }
+})
+
+
+//-------------------------------------------------
+//http://localhost:3001/recipes?name=Garlic
+router.get('/recipes', async (req, res)=> {
+    console.log("Entrando a hacer la busqueda a la DB")
+    const {name} = req.query
+    const apiDB = []
+    try{
+        if (!name) return res.status(404).send(`Debe ingresar un dato para realizar la busqueda`)
+        const recipePromDb = await Recipe.findAll({
+            where: {
+                title: {[Op.substring]: name},
+            }
+            })
+            Promise.all( [recipePromDb] ).then((res2) => {     
+                const [recipeDb] = res2
+                let aDB = recipeDb;
+                for ( i in aDB )
+                { 
+                    apiDB.push( { id:aDB[i].id, title:aDB[i].title, image:aDB[i].image, healthscore:aDB[i].healthscore, diets:aDB[i].diets })
+                };
+                console.log("Extrae Busqueda de DB")
+                res.status(201).json(apiDB);
+            });    
+            
         }
     catch (e) {
         console.log(e)
     }
 })
 
-//
 
 //http://localhost:3001/diets
 router.get('/diets', async (req, res)=> {
@@ -161,6 +158,7 @@ router.get('/diets', async (req, res)=> {
     }
 })
 
+/*
 //http://localhost:3001/home/orderBy/1ASC
 router.get('/home/orderBy/:id', async (req, res)=> {
     const {id} = req.params
@@ -210,35 +208,8 @@ router.get('/xrecipes', async (req, res)=> {
     }
 })
 
-//-------------------------------------------------
-//http://localhost:3001/recipes?name=Garlic
-router.get('/recipes', async (req, res)=> {
-    console.log("Entrando a hacer la busqueda a la DB")
-    const {name} = req.query
-    const apiDB = []
-    try{
-        if (!name) return res.status(404).send(`Debe ingresar un dato para realizar la busqueda`)
-        const recipePromDb = await Recipe.findAll({
-            where: {
-                title: {[Op.substring]: name},
-            }
-            })
-            Promise.all( [recipePromDb] ).then((res2) => {     
-                const [recipeDb] = res2
-                let aDB = recipeDb;
-                for ( i in aDB )
-                { 
-                    apiDB.push( { id:aDB[i].id, title:aDB[i].title, image:aDB[i].image, healthscore:aDB[i].healthscore, diets:aDB[i].diets })
-                };
-                console.log("Extrae Busqueda de DB")
-                res.status(201).json(apiDB);
-            });    
-            
-        }
-    catch (e) {
-        console.log(e)
-    }
-})
+*/
+
 
 module.exports = router;
 

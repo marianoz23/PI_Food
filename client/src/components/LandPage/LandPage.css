@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     align-content: center;
-    margin-right: 50px;
+    margin-right: 600px;
 }
 
 .buttonlanding {
@@ -26,9 +26,9 @@
     border: none;
     border-radius: 15px;
     padding: 15px;
-    min-height: 30px;
+    min-height: 20px;
     min-width: 180px;
-    margin-right: 16rem;
+    margin-right: 12rem;
     margin-top: 1%;
 }
 
@@ -46,10 +46,10 @@
 }
 
 .title {
-    margin-right: 18rem;
+    margin-right: 12rem;
     margin-top: 80%;
     font-size: 4rem;
-    padding: 20px;
+    padding: 10px;
     overflow: hidden;
     color: black;
     font-family: 'Georgia';

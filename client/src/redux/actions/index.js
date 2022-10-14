@@ -1,16 +1,16 @@
 export const GET_FOODS = "GET_FOODS";
 export const GET_SEARCH = "GET_SEARCH";
+export const ORDER_BY_TITLE = "ORDER_BY_TITLE"
+export const ORDER_BY_HEALTHSCORE = "ORDER_BY_HEALTHSCORE"
+export const FILTER_BY_DIET = "FILTER_BY_DIET" 
 export const GET_FOOD_DETAIL = "GET_FOOD_DETAIL";
 export const CREATE_RECIPE = "CREATE_RECIPE";
 export const GET_DIETS = "GET_DIETS";
-export const ORDER_BY_TITLE = "ORDER_BY_TITLE"
-export const ORDER_BY_HEALTHSCORE = "ORDER_BY_HEALTHSCORE"
-
+export const CLEAR = "CLEAR"
 
 export function getFoods(){
+
     return function (dispatch){
-        //&number=100
-//        return fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=23f9b242f5524a6ca59188b1138f18b0`) 
         return fetch(`http://localhost:3001/home`)
         .then(res => res.json())
         .then(res => {  
@@ -36,36 +36,26 @@ export function getSearch(title){
     }
 }
 
-export function orderByTitle(tipo){
-    console.log("ACTIONS:tipo order title:", tipo)
-    return function (dispatch){
-        
-        return fetch(`http://localhost:3001/home/orderBy/1${tipo}`) 
-        .then(res => res.json())
-        .then(res => {  
-            dispatch({
-                type: "ORDER_BY_TITLE",
-                payload: res
-            })
-        })
+export function orderByTitle(order){
+    return {  
+        type: "ORDER_BY_TITLE",
+        payload: order
     }
 }
 
-export function orderByHealthScore(tipo){
-    console.log("ACTIONS:tipo order HealthScore:", tipo)
-    return function (dispatch){
-        
-        return fetch(`http://localhost:3001/home/orderBy/2${tipo}`) 
-        .then(res => res.json())
-        .then(res => {  
-            dispatch({
-                type: "ORDER_BY_HEALTHSCORE",
-                payload: res
-            })
-        })
+export function orderByHealthScore(order){
+    return{
+        type: "ORDER_BY_HEALTHSCORE",
+        payload: order
     }
 }
 
+export function filterByDiet(diet){
+    return{
+        type: "FILTER_BY_DIET",
+        payload: diet
+    }
+}
 
 export function getDiets(){
     return function (dispatch){
@@ -84,7 +74,6 @@ export function getDiets(){
 export function getFoodDetail(id){
 
     return function (dispatch){
-//        return fetch(`https://api.spoonacular.com/recipes/${id}/information?apikey=23f9b242f5524a6ca59188b1138f18b0&number=100`) 
         return fetch(`http://localhost:3001/recipes/${id}`)
         .then(res => res.json())
         .then(res => { console.log(res) 
@@ -105,6 +94,7 @@ export function addRecipe(input){
                 headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify({
                     title: input.title,
+                    image: input.image,
                     summary: input.summary,
                     healthscore: input.healthScore,
                     instructions: input.instructions,
@@ -122,3 +112,41 @@ export function addRecipe(input){
     }   
 }
 
+export function clearDetail() {
+    return {
+        type: "CLEAR"
+    }
+}
+
+/*
+export function orderByTitle(tipo){
+    //    console.log("ACTIONS:tipo order title:", tipo)
+        return function (dispatch){
+            
+            return fetch(`http://localhost:3001/home/orderBy/1${tipo}`) 
+            .then(res => res.json())
+            .then(res => {  
+                dispatch({
+                    type: "ORDER_BY_TITLE",
+                    payload: res
+                })
+            })
+        }
+    }
+
+export function orderByHealthScore(tipo){
+//    console.log("ACTIONS:tipo order HealthScore:", tipo)
+    return function (dispatch){
+        
+        return fetch(`http://localhost:3001/home/orderBy/2${tipo}`) 
+        .then(res => res.json())
+        .then(res => {  
+            dispatch({
+                type: "ORDER_BY_HEALTHSCORE",
+                payload: res
+            })
+        })
+    }
+}
+
+*/    

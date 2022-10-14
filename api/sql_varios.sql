@@ -20,7 +20,7 @@ insert into "Recipes" (image, title, summary, healthscore, instructions, diets, 
 			   76,'prueba 77','{"vegan", "dairy free"}','{"lunch", "dinner"}'
 );
 insert into "Recipes" (image, title, summary, healthscore, instructions, diets, "dishTypes")
-	   values ('https://t2.rg.ltmcdn.com/es/posts/2/5/6/arroz_con_pollo_peruano_59652_600.jpg',
+	   values ('https://recetascocinaperuana.com/wp-content/uploads/2022/09/recetas-de-comidas-peruanas.jpg',
 		   	   'Arroz con Pollo', 'The recipe Homemade Garlic and Basil French Fries is ready in roughly 45 recipes.',
 			   98,'prueba 77', '{ "dairy free"}', '{"lunch"}'
 );
@@ -38,9 +38,9 @@ select * from "Diets"
 
 
 
-update "Recipes" set image='https://www.comedera.com/wp-content/uploads/2013/05/lomo-saltado-peruano-plato.jpg' where id=2;	   
+update "Recipes" set image='https://recetascocinaperuana.com/wp-content/uploads/2022/09/recetas-de-comidas-peruanas.jpg' where id=7;	   
 			   
-delete from "Recipes" where id=2
+delete from "Recipes" where id=6
 
 Select * from "Recipes" where name like '%Garlic%';	
 Select * from "Recipes" where name like '%Sou%';	

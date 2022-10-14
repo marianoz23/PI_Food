@@ -1,0 +1,82 @@
+.BackGraundDetails {
+    background-image: url("../img/foto_inicio.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+.con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    height: 35rem;
+    color: rgb(2, 1, 1);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.imgRecipe {
+    margin: 10px;
+    height: 40%;
+    width: 40%;
+}
+
+.buttonDetails {
+    background-image: linear-gradient(90deg, #ff0000 0%, #000000 49%, #ff0000 80%, #000000 100%);
+    animation: slidebg 5s linear infinite;
+    margin: 20px;
+    padding: 10px;
+    height: auto;
+    width: auto;
+    border-radius: 10px;
+    color: aliceblue;
+}
+
+.buttonDetails:hover {
+    background-image: linear-gradient(90deg, #ff0000 0%, #000000 49%, #ff0000 80%, #000000 100%);
+    animation: slidebg 2s linear infinite;
+
+}
+
+
+.dieta {
+    padding: 5px;
+    margin: 5px;
+    background-color: darkgrey;
+    border: 2px solid black;
+}
+
+#ab {
+    opacity: 60%;
+}
+
+.contained_info {
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.info {
+    opacity: 100%;
+    margin: 10px;
+    color: aliceblue;
+}
+
+
+.recipes {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}

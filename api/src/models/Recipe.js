@@ -4,6 +4,7 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('Recipe', {
+   
     image: {
       type: DataTypes.STRING
     },
@@ -17,6 +18,10 @@ module.exports = (sequelize) => {
     }, 
     healthscore: {
       type: DataTypes.INTEGER,
+      validate:{
+        max:100,
+        min:0
+      }
     },
     instructions: {
       type:DataTypes.STRING,

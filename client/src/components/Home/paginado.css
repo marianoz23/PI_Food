@@ -1,0 +1,40 @@
+.Back_Page{
+       display: flex;
+       justify-content: center;
+   }
+   
+   .ul_contained{
+       color:gray;
+       display: flex;
+       justify-content: center;
+       flex-direction: row;
+       list-style:none;
+       align-items: center;
+      
+   }
+   
+   .ul_contained:hover{
+    color: gray;
+   }
+   
+   .li{
+       list-style:none;
+       margin: 5px;
+       color: gray;
+       display: inline;
+       text-decoration:none;
+   }
+   
+   .li:hover{
+       color: #000;
+   }   
+   
+   .a{
+       color: rgb(0, 0, 0);
+       border-radius: 100px;
+       border: 0px;
+   }
+   
+   .a:hover{
+       color: gray;
+   }

@@ -1,15 +1,16 @@
 .home{
-    background-color: gray;
+    background-color: white;
     color: white;
 }
 .home a{
-    color: gray ;
+    color: yellow ;
 }
 .home h1,h4 {
-    color: yellow;
+    color: gray
+    ;
 }
 .home h3{
-    color: white;
+    color: yellow;
 }
 .home h3:hover{
     color:yellow;
@@ -18,18 +19,55 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: 100%;
     margin-left: 10.4rem;
 }
 
 .Home{
-    /* background-color:  rgb(93, 92, 92); */
+    background-color:  white;
     display: grid;
     grid-template-columns:30% 30% 30%;
-    grid-template-rows: 30% 30% 30%;
     justify-content:center; 
-    /* background-size: 100%; */
-    width: 50%;
+    background-size: 100%; 
+    width: 100%;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.cards {
+    margin-left: 3%;
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    gap: 10px;
+    margin-bottom: 60px;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+  
+  /* On mouse-over, add a deeper shadow */
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  /* Add some padding inside the card container */
+  .container {
+    padding: 2px 16px;
+  }
+
+  .recipes {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
 }

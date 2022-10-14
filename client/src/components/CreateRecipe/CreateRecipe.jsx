@@ -1,29 +1,38 @@
 import React from "react";
 import { useState } from "react";
-
 import "./CreateRecipe.css";
 import { connect } from "react-redux";
 import { addRecipe } from "./../../redux/actions/index";
 import { dietList } from "./../../utils/Diet_List.js";
-
 import {useHistory} from 'react-router-dom';
+import NavBar from "./../Nav/NavBar";
+
+
+function manageError(campo) {
+  let err = {};
+  if (!campo.title || campo.title.length<5 || (campo.title.substring(0,1)>0 && campo.title.substring(0,1)<9) ) err.title = "Enter Title";
+  else if (!campo.summary || campo.summary.length<5 || (campo.summary.substring(0,1)>0 && campo.summary.substring(0,1)<9) ) err.summary = "Enter Summary";
+  else if (!campo.instructions) err.instructions = "Enter Instructions";
+  return err
+}
 
 function CreateRecipe({ add }) {
   const initialState = {
-    image: "",
     title: "",
+    image: "",    
     summary: "",
     healthScore: "",
     diets: [] 
   };
 
-  let [input, setInput] = React.useState(initialState);
+  const [input, setInput] = React.useState(initialState);
+  const [err, setErr] = React.useState({});
 
   let history = useHistory()
 
   let handleOnChange = (e) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
- 
+    setErr(manageError({...input, [e.target.name]: e.target.value }));
   };
 
   const [checkedState, setCheckedState] = useState(new Array(dietList.length).fill(false) );
@@ -36,11 +45,15 @@ function CreateRecipe({ add }) {
   setCheckedState(updatedCheckedState);
   };
 
-  let handleOnSubmit = (e) => {
-    e.preventDefault();
-    //console.log("lista check",checkedState);
+  const handleOnSubmit = (e) => {
     cargaDiets();
+    if (!input.diets.length)
+    {
+      e.preventDefault();
+      return alert("please select diet..")
+    }
     add(input);
+    alert("Recipe created..!")
     setInput(initialState);
     history.push('/home')
   };
@@ -50,17 +63,15 @@ function CreateRecipe({ add }) {
     for (let i=0; i<checkedState.length; i++ ){
       if (checkedState[i]){
         check = dietList[i];
-        //console.log(check.name);
         input.diets.push(check.name);
       }
     }
-    //console.log(input.diets)    
   }
-
+ 
   return (
     <div>
-      <h2> ADD NEW RECIPE</h2>
-      <hr />
+      <NavBar/>
+      <h1 className="recipes">ADD NEW RECIPE</h1>
       <form onSubmit={(e) => handleOnSubmit(e)}>
         <div>
           <label>Title: </label>
@@ -70,6 +81,7 @@ function CreateRecipe({ add }) {
             value={input.title}
             onChange={(e) => handleOnChange(e)}
           />
+          {err.title && (<p className="error"> {err.title} </p>)}
         </div>
         <div>
           <label>Image: </label>
@@ -89,15 +101,18 @@ function CreateRecipe({ add }) {
             value={input.summary}
             onChange={(e) => handleOnChange(e)}
           />
+          {err.summary && (<p className="error"> {err.summary} </p>)}
+
         </div>
         <div>
           <label>Health Score: </label>
           <input
-            type="text"
+            type="range" min="0" max="100" 
             name="healthScore"
             value={input.healthScore}
             onChange={(e) => handleOnChange(e)}
           />
+          {<p>{input.healthScore}</p>}
         </div>
 
         <div>
@@ -108,6 +123,7 @@ function CreateRecipe({ add }) {
             value={input.instructions}
             onChange={(e) => handleOnChange(e)}
           />
+          {err.instructions && (<p className="error"> {err.instructions} </p>)}
         </div>
 
         <div>
@@ -140,7 +156,9 @@ function CreateRecipe({ add }) {
           value="ADD RECIPE"
           disabled={!input.title ? true : false}
         />
+
       </form>
+
     </div>
   );
 }

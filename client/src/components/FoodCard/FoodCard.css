@@ -12,3 +12,20 @@
   
   }
 
+ 
+.img {
+    max-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.cards {
+    margin-left: 3%;
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    gap: 10px;
+    margin-bottom: 60px;
+}
