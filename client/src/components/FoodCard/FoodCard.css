@@ -29,3 +29,8 @@
     gap: 10px;
     margin-bottom: 60px;
 }
+
+.cards_Diets {
+    justify-content: left;
+    align-items: left;
+}

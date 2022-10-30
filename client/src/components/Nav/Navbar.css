@@ -3,7 +3,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    background-color: black;
+    background-color:orange;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -34,7 +34,7 @@
 }
 
 .list-item a {
-    color: white;
+    color: black;
     height: 100%;
     padding: 16px 10px;
     border-bottom: 4px solid transparent;

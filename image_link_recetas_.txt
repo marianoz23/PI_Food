@@ -1,3 +1,48 @@
 https://comidaschilenas.com/wp-content/uploads/2019/11/Receta-de-arroz-con-huevo.jpg
 https://lascomidasperuanas.com/wp-content/uploads/2021/07/Receta-de-arroz-tapado-de-carne-peruano.jpg
 https://recetascocinaperuana.com/wp-content/uploads/2022/09/recetas-de-comidas-peruanas.jpg
+
+https://micevichedehoy.com/wp-content/uploads/2018/10/ceviche-carretillero_700x467.jpg
+
+giannina.huayta@gmail.com gonza111 / 
+40be44d68afd48ad9472c2694d488389 gh
+a1d69b0f35d946a3b8a3fc8bd7ca347d mz
+7f744c0f48ea437586ff4361ab3ad464 gz
+
+Tener en cuanta para presentaciom de PI
+
+parte 1: Funcionalidad (5 minutos)
+
+Navegar explicando 
+Explicar POrque usamos los colores (alineados al tipo de aplicacion)
+Limpia estados
+Flechas hacia atras (retroceder)
+
+Rejects - controlar la URL de una imgane
+QUe muestre error si no hay nada al hacer search
+
+Buscar Bugs
+Formularios
+validaciones en Submit
+
+ordenamientos y foltros
+ordenar sobre el filtro
+
+
+Parte 2: Cambio en vivo (10 minutos)
+Podemos copiar y googlear y devstools  de react y redux (para rutas)
+
+devtools
+consolo.log
+redux (saber que eta pasando)
+
+testear en el back con postman
+Consologear el backedn 
+
+mientras hacemos los cambios contar lo que se esta haciendo.
+
+resumir lineas de codigo en pocas oraciones.
+
+Plantear lo que nos piden y explicar razonamiento.
+
+Miercoles y viernes la presentacion de la proxima semana.

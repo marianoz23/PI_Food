@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: false
     }, 
-    healthscore: {
+    healthScore: {
       type: DataTypes.INTEGER,
       validate:{
         max:100,
@@ -26,17 +26,19 @@ module.exports = (sequelize) => {
     instructions: {
       type:DataTypes.STRING,
     },
-    diets: {
-      type:DataTypes.ARRAY(DataTypes.STRING),
-    },
     dishTypes: {
       type:DataTypes.ARRAY(DataTypes.STRING),
     },
+
+ /*    diets: {
+      type:DataTypes.ARRAY(DataTypes.STRING),
+    },
+
     tipo: {
       type : DataTypes.INTEGER,
       defaultValue: 0
     }
-
+*/
   },{
     timestamps: false
   });

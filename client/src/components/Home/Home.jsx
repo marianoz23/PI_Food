@@ -2,8 +2,9 @@ import "./home.css";
 import NavBar from "./../Nav/NavBar";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getFoods, getSearch, orderByTitle, orderByHealthScore, filterByDiet } from "./../../redux/actions/index";
-import FoodCard from "./../FoodCard/FoodCard.jsx"
+import { loadDiets, getFoods, getSearch, orderByTitle, orderByHealthScore, filterByDiet } from "./../../redux/actions/index";
+import FoodCard from "./../FoodCard/FoodCard.jsx";
+import ShowError from "./../FoodCard/ShowError.jsx";
 import Page from "./paginado.jsx";
 
 export class Home extends Component {
@@ -15,10 +16,13 @@ export class Home extends Component {
       tipoH: 'ASC',
       tipoD: '',
       currentPage: 1, 
-      recipesxPage : 9,};
+      recipesxPage : 9,
+      errorMessaje : "no hay registros"
+    };
   }
 
   componentDidMount (){
+    this.props.loadDiets()
     this.props.getFoods()
     }
  
@@ -51,6 +55,7 @@ export class Home extends Component {
 
   render() {
     const { title } = this.state;
+    const { errorMessaje } = this.state;
     const { recipesxPage } = this.state;
     const { currentPage } = this.state;
     //paginado
@@ -63,9 +68,8 @@ export class Home extends Component {
 
     return (
     <header>
-      
       <div>
-        <NavBar/>
+      <NavBar/>
       </div> 
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <div>
@@ -84,7 +88,7 @@ export class Home extends Component {
           >Search</button>
       
         </form>
-
+        <div className="contenedor-principal">
         <div>
           <h3>Order by Title</h3>
           <select onChange={e => this.handleChange_orderByT(e)} >
@@ -92,7 +96,8 @@ export class Home extends Component {
             <option value="Asc">A to Z</option>
             <option value="Desc">Z to A</option>
           </select>
-
+        </div>
+        <div>
           <h3>Order by Health Score</h3>
             <select onChange={e => this.handleChange_orderByH(e)}>
               <option name="Select One">Select Orden</option>
@@ -107,18 +112,16 @@ export class Home extends Component {
             <option value="" selected>All Diets</option>
             <option value="gluten free" >Gluten Free</option>
             <option value="dairy free" >Dairy Free</option>
-            <option value="lacto ovo" >Lacto Ovo</option>
-            <option value="lacto-vegetarian" >Octo-Vegetarian</option>
-            <option value="ovo-vegetarian" >Octo-Vegetarian</option>
+            <option value="lacto ovo vegetarian" >Lacto Ovo Vegetarian</option>
             <option value="vegan" >Vegan</option>
-            <option value="pescetarian" >Pescetarian</option>
+            <option value="pecetarian" >Pecetarian</option>
             <option value="paleo" >Paleo</option>
             <option value="primal" >Primal</option>
-            <option value="low fodmap" >Low FODMAP</option>
+            <option value="low FODMAP" >Low FODMAP</option>
             <option value="whole 30" >Whole 30</option>
             </select>
         </div>
-     
+        </div>
 
       <div>
         <Page className="page" recipesxPage={recipesxPage} allRecipes={this.props.foods?.length} paginado={paginado}></Page>
@@ -126,17 +129,16 @@ export class Home extends Component {
 
        </div>
         <div >
-        <h1 className="recipes">Recipes</h1>
+        <h1 className="recipes" >Recipes - Pag.{currentPage}</h1>
           <div className="Home">
-            {/*{!this.props.foods? "No hay recipes" : this.props.foods.map(el => (*/}
-              {!currentRecipes? "No hay recipes" : currentRecipes.map(el => (
+              {!currentRecipes? <h1>`${errorMessaje}`</h1> : currentRecipes.map(el => (
               <div > 
                 <FoodCard
-                  key = {el.id}
+//                  key = {el.id}
                   id={el.id}
                   title={el.title}
                   image={el.image}
-                  healthscore={el.healthscore}
+                  healthScore={el.healthScore}
                   diets={el.diets}
                 />
               </div>
@@ -163,6 +165,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
   return {
+    loadDiets: () => dispatch(loadDiets()),
     getFoods: () => dispatch(getFoods()),
     getSearch: title => dispatch(getSearch(title)),
     orderByTitle: tipoT => dispatch(orderByTitle(tipoT)),

@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from "./../../redux/actions/index"
 import NavBar from "./../Nav/NavBar";
-
+import "./FoodDetail.css";
 
 const FoodDetail = (props) => {
 
@@ -17,33 +17,34 @@ const FoodDetail = (props) => {
     dispatch(actions.clearDetail());
   }, [])
   
-
   return (
     <div >
       <NavBar/>
       <h1 className="recipes">RECIPE DETAIL</h1>
-      <img src={detail.image} alt={detail.name} />
-      <h3>{detail.title}</h3>
-      <h5>{detail.summary?.replace(/<[^>]*>/g,'')}</h5>
-      <h2>Health Score: {detail.healthScore}</h2>
-      <h3>Dish Types</h3>
-      <ol>
-      {
-        detail.dishTypes?.map(dish => (
-          <li >{dish}</li>
-        ))
-      }
-      </ol>
-
-      <h3>Diets</h3>
-      <ol>
-      {
-        detail.diets?.map(diet => (
-          <li>{diet}</li>
-        ))
-      }
-      </ol>
-
+      <div className="contenedor-principal">
+        <div className="contenedor-principal__izquierda">
+          <div className="contenedor-principal__imagen-izquierda">
+            <img src={detail.image} alt={detail.name} />
+          </div>
+          <h3>{detail.title}</h3>
+        </div>
+        <div className="contenedor-principal__derecha">  
+          <h5>{detail.summary?.replace(/<[^>]*>/g,'')}</h5>
+          <h2>Health Score: {detail.healthScore}</h2>
+          <h3>Dish Types</h3>
+          {
+            detail.dishTypes?.map(dish => (
+              <li key="{dish}">{dish}</li>
+            ))
+          }
+          <h3>Diets</h3>
+          {
+            detail.diets?.map(eDiet => (
+              <li key="{eDiet}">{eDiet}</li>
+            ))
+          }
+        </div>
+      </div>
     </div>
   );
 };
@@ -51,8 +52,6 @@ const FoodDetail = (props) => {
 export default FoodDetail;
 
 /* 
-summary.replace(/<[^>]*>/g,'')
-res.set('Content-Type', 'text/html; charset=utf-8')
       <h4>steps</h4>
       <ol>
       {

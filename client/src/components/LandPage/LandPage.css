@@ -2,12 +2,12 @@
     display: flex;
     justify-content:center;
     align-items: center;
-    background-image: url("../../img/cooking.png");
-    background-position: right;
-    background-size:90%;
+    background-image: url("../../img/k_archive_579790e619347ae09990d090dac829f441edf2f6.jfif");
+    background-position: left;
+    background-size:100%;
     background-repeat: no-repeat;
     overflow: hidden;
-    width: 58%;
+    width: 70%;
     height: 100%;
     position: fixed
 }
@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     align-content: center;
-    margin-right: 600px;
+    margin-right: 800px;
 }
 
 .buttonlanding {
@@ -28,8 +28,8 @@
     padding: 15px;
     min-height: 20px;
     min-width: 180px;
-    margin-right: 12rem;
-    margin-top: 1%;
+    margin-right: 8rem;
+    margin-top: 10%;
 }
 
 .presentation {
@@ -46,7 +46,7 @@
 }
 
 .title {
-    margin-right: 12rem;
+    margin-right: -50rem;
     margin-top: 80%;
     font-size: 4rem;
     padding: 10px;

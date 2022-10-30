@@ -1,5 +1,4 @@
 .BackGraundDetails {
-    background-image: url("../img/foto_inicio.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -72,7 +71,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    background-color: black;
+    background-color:orange;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -80,3 +79,30 @@
     padding: 0 20px;
     box-sizing: border-box;
 }
+
+
+.contenedor-principal {
+    display: flex;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+.contenedor-principal > div {
+    width : 50%
+}  
+  .contenedor-principal__izquierda,
+  .contenedor-principal__derecha {
+    background:gainsboro;
+    padding: 10px;
+  }
+  .contenedor-principal__izquierda {
+    border-right: 1px solid white;
+  }
+  .contenedor-principal__imagen-izquierda img{
+    margin-left: 0%;
+    max-width: 100%;
+  }
+  .contenedor-principal__imagen-derecha img{
+    margin-left: 20%;
+    max-width: 100%;
+  }

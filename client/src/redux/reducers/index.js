@@ -1,5 +1,5 @@
-import {GET_FOODS, GET_SEARCH, GET_FOOD_DETAIL, CREATE_RECIPE, GET_DIETS, ORDER_BY_TITLE, ORDER_BY_HEALTHSCORE, CLEAR, FILTER_BY_DIET} from '../actions/index.js'
-
+import {LOAD_DIETS, GET_FOODS, GET_SEARCH, GET_FOOD_DETAIL, CREATE_RECIPE, ORDER_BY_TITLE, ORDER_BY_HEALTHSCORE, CLEAR, FILTER_BY_DIET} from '../actions/index.js'
+    
 const initialState = {
   foods: [],
   foodMirror:[],
@@ -9,31 +9,29 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_DIETS:
+        return{
+            ...state,
+            diets: action.payload
+        }
+
     case GET_FOODS:
       return {
           ...state,
           foods: action.payload,
           foodMirror: action.payload
       }
-    case GET_SEARCH:
-      return {
-          ...state,
-          foods: action.payload
-        }
+
     case GET_FOOD_DETAIL:
     return {
         ...state,
         foodDetail: action.payload
     }
+
     case CREATE_RECIPE:
         return {
             ...state,
             foods: [...state.foods, action.payload]
-        }
-    case GET_DIETS:
-        return{
-            ...state,
-            diets: action.payload
         }
 
     case ORDER_BY_TITLE:
@@ -59,14 +57,14 @@ const rootReducer = (state = initialState, action) => {
     case ORDER_BY_HEALTHSCORE:
         const orderRecipesHealtScore = action.payload === "Asc" ? 
         state.foods.sort((a,b)=>{
-            a=a.healthscore;
-            b=b.healthscore;
+            a=a.healthScore;
+            b=b.healthScore;
             if(a === b) return 0
             if (a < b) return -1
             return 1
         }) : state.foods.sort((a,b)=>{
-            a=a.healthscore;
-            b=b.healthscore;
+            a=a.healthScore;
+            b=b.healthScore;
             if(a === b) return 0
             if (a > b) return -1
             return 1
@@ -76,19 +74,31 @@ const rootReducer = (state = initialState, action) => {
         foods: orderRecipesHealtScore
         }
 
-        case FILTER_BY_DIET:
-            const recipes = state.foodMirror
-            const dietFilter = action.payload === "" ? recipes  
+    case FILTER_BY_DIET:
+        const recipes = state.foodMirror
+        const dietFilter = action.payload === "" ? recipes  
                 :recipes.filter(recipe => {
-                    let diet = recipe.diets.map(d => d)
-                    if (diet.includes(action.payload))return recipe
+                    var diet = recipe.diets.map(d => d)
+                    if (diet.includes(action.payload)) return recipe // busca sobre un elementos de un array
+                    //if (diet.some(e => e.name === action.payload)) return recipe // busca dobre objetos dentro de un array
                     return null
                     })  
-            return {
-                ...state,
-                foods: dietFilter
-            }
+        return {
+            ...state,
+            foods: dietFilter
+        }
 
+    case GET_SEARCH:
+        const aCopy = state.foodMirror
+        const dataSearch = aCopy.filter(recipe => {
+            if (recipe.title.includes(action.payload)) return recipe 
+            return null
+        }) 
+        return {
+            ...state,
+            foods: dataSearch
+        }
+          
     case CLEAR: 
         return{
             ...state,

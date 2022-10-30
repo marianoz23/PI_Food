@@ -1,3 +1,4 @@
+export const LOAD_DIETS = "LOAD_DIETS";
 export const GET_FOODS = "GET_FOODS";
 export const GET_SEARCH = "GET_SEARCH";
 export const ORDER_BY_TITLE = "ORDER_BY_TITLE"
@@ -5,8 +6,21 @@ export const ORDER_BY_HEALTHSCORE = "ORDER_BY_HEALTHSCORE"
 export const FILTER_BY_DIET = "FILTER_BY_DIET" 
 export const GET_FOOD_DETAIL = "GET_FOOD_DETAIL";
 export const CREATE_RECIPE = "CREATE_RECIPE";
-export const GET_DIETS = "GET_DIETS";
 export const CLEAR = "CLEAR"
+
+export function loadDiets(){
+    return function (dispatch){
+        
+        return fetch(`http://localhost:3001/diets`) 
+        .then(res => res.json())
+        .then(res => {  
+            dispatch({
+                type: "LOAD_DIETS",
+                payload: res
+            })
+        })
+    }
+}
 
 export function getFoods(){
 
@@ -23,16 +37,14 @@ export function getFoods(){
 }
 
 export function getSearch(title){
-    return function (dispatch){
-        
-        return fetch(`http://localhost:3001/recipes?name=${title}`) 
-        .then(res => res.json())
-        .then(res => {  
-            dispatch({
-                type: "GET_SEARCH",
-                payload: res
-            })
-        })
+//    return function (dispatch){
+//        return fetch(`http://localhost:3001/recipes?name=${title}`) 
+//        .then(res => res.json())
+//        .then(res => {  
+//            dispatch({
+    return{
+        type: "GET_SEARCH",
+        payload: title
     }
 }
 
@@ -57,26 +69,13 @@ export function filterByDiet(diet){
     }
 }
 
-export function getDiets(){
-    return function (dispatch){
-        
-        return fetch(`http://localhost:3001/diets`) 
-        .then(res => res.json())
-        .then(res => {  
-            dispatch({
-                type: "GET_DIETS",
-                payload: res
-            })
-        })
-    }
-}
 
 export function getFoodDetail(id){
 
     return function (dispatch){
         return fetch(`http://localhost:3001/recipes/${id}`)
         .then(res => res.json())
-        .then(res => { console.log(res) 
+        .then(res => {  
             dispatch({
                 type: "GET_FOOD_DETAIL",
                 payload: res
@@ -96,7 +95,7 @@ export function addRecipe(input){
                     title: input.title,
                     image: input.image,
                     summary: input.summary,
-                    healthscore: input.healthScore,
+                    healthScore: input.healthScore,
                     instructions: input.instructions,
                     diets: input.diets,
                     dishTypes: input.dishTypes
